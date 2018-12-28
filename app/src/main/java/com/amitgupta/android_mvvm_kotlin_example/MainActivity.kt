@@ -1,6 +1,6 @@
 package com.amitgupta.android_mvvm_kotlin_example
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
 class MainActivity : AppCompatActivity() {
