@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">android-mvvm-kotlin-example</string>
+
+    <!--Common  Text-->
+    <string name="login">login</string>
+    <string name="ok">Ok</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="back">Back</string>
+
+
+    <!--Hint-->
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+
+    <!--Login Module-->
+    <string name="error_username_empty">UserName cannot be empty</string>
+    <string name="error_password_empty">Password cannot be empty</string>
+
 </resources>
