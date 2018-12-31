@@ -2,11 +2,12 @@ package com.amitgupta.android_mvvm_kotlin_example.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.amitgupta.android_mvvm_kotlin_example.Constants
 import com.amitgupta.android_mvvm_kotlin_example.R
 import com.amitgupta.android_mvvm_kotlin_example.data.Resource
 import com.amitgupta.android_mvvm_kotlin_example.data.Status
@@ -29,7 +30,15 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        /**
+         *
+         */
+        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+
         listOf(login).forEach { it.setOnClickListener(this@LoginActivity) }
+
+        progress_bar.visibility = View.GONE
+
     }
 
     override fun onClick(v: View?) {
@@ -63,27 +72,36 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
+
     fun observeLoginViewModel() {
-        loginViewModel.getLoginDataObservable().observe(this@LoginActivity, Observer<Resource<LoginResponse>> { resource ->
-            if (resource != null) {
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        progress_bar.visibility = View.GONE
-                        Toast.makeText(this@LoginActivity,resource.data?.message,Toast.LENGTH_SHORT).show()
-                        //Go to DashBoard
-                        startActivity(Intent(this@LoginActivity,DashBoardActivity::class.java))
-                    }
-                    Status.ERROR -> {
-                        progress_bar.visibility = View.GONE
-                        Toast.makeText(this@LoginActivity,resource.data?.message,Toast.LENGTH_SHORT).show()
-                    }
-                    Status.LOADING -> {
-                        progress_bar.visibility = View.VISIBLE
-                    }
+        loginViewModel.getLoginDataObservable()
+            .observe(this@LoginActivity, Observer<Resource<LoginResponse>> { resource ->
+                if (resource != null) {
+                    when (resource.status) {
+                        Status.SUCCESS -> {
+                            progress_bar.visibility = View.GONE
+                            Toast.makeText(this@LoginActivity, resource.data?.message, Toast.LENGTH_SHORT).show()
+                            if (resource.data?.code == Constants.API_SUCCESS_CODE) {
+                                //Go to DashBoard
+                                startActivity(Intent(this@LoginActivity, DashBoardActivity::class.java))
+                                finish()
+                            } else if (resource.data?.code == Constants.API_FAILURE_CODE) {
 
+                            }
+
+
+                        }
+                        Status.ERROR -> {
+                            progress_bar.visibility = View.GONE
+                            Toast.makeText(this@LoginActivity, resource.data?.message, Toast.LENGTH_SHORT).show()
+                        }
+                        Status.LOADING -> {
+                            progress_bar.visibility = View.VISIBLE
+                        }
+
+                    }
                 }
-            }
 
-        })
+            })
     }
 }
