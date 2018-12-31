@@ -88,8 +88,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                             } else if (resource.data?.code == Constants.API_FAILURE_CODE) {
 
                             }
-
-
                         }
                         Status.ERROR -> {
                             progress_bar.visibility = View.GONE
